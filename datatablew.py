@@ -1,3 +1,5 @@
+#Import of necessary libararies
+
 from tkinter import *
 from pandastable import Table, TableModel
 import requests
@@ -6,16 +8,28 @@ import pandas as pd
 from geopy.geocoders import Nominatim
 geolocator = Nominatim()
 
-
+#Function to input text
 
 def printtext():
     global e
     string = e.get() 
-    print (string) 
+    return string 
 
+#Selectcity function
+"""
+first select the location according to input value
+then by using geopy module convert into latttude and longitude and feed into website requeste
+e.g.
+create dictionary of varible as 'key':'value'
 
-def selectcity(string):
-    location = geolocator.geocode(string)
+Extract seven_day with beautiful soup module with find attribute
+
+Collect the data as Tonight, Periods, Short_descs, temp, descs and transform into dataframe as weather
+
+Return Dataframe with condition of night only
+"""
+def selectcity():
+    location = geolocator.geocode(printtext)
     latitude = location[1][0]
     longitude = location[1][1]
     payload = {'lat': latitude , 'lon': longitude}
@@ -43,7 +57,9 @@ def selectcity(string):
     Low_night = pd.DataFrame(weather[is_night])
     return Low_night
 
+
 root = Tk()
+#Message to display
 msg = Message(root, text='Enter the address or zipcode or city name to see weather table')
 msg.config(font=('times',14))
 root.title('Name')
@@ -69,6 +85,7 @@ class TestApp(Frame):
 
 
 
+#Pack the message with tkinter
 msg.pack()
 
 b = Button(root,text='okay',command=printtext)
